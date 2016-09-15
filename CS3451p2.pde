@@ -30,7 +30,12 @@ void draw()      // executed at each frame
     background(white); // clear screen and paints white background
     pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polyloop with vertex labels
     stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
-    pen(green,5); arrow(A,B);            // defines line style wiht (5) and color (green) and draws starting arrow from A to B
+    
+    boolean goodSplit = P.splitBy(A,B);
+    if (goodSplit) pen(green,5);
+    else pen(red,7);
+    arrow(A,B);
+               // defines line style wiht (5) and color (green) and draws starting arrow from A to B
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas

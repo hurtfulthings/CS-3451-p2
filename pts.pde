@@ -302,8 +302,8 @@ class pts
    boolean splitBy(pt A, pt B)
      {
      int r = 0, g = 0, b = 0;
-     for (int v = 0; v < nv: v++)
-       if(LineStabsEdge(A,B,G[v],G[nv]))
+     for (int v = 0; v < nv; v++)
+       if(LineStabsEdge(A,B,G[v],G[n(v)]))
          {
          vec V = V(A,B);
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
@@ -313,7 +313,7 @@ class pts
          if(1 < t) {pen(blue, 2); b++;}
          show(X,4);
          }
-     
+    return g == 0;
      
      
      }
