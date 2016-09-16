@@ -4,6 +4,8 @@ import processing.pdf.*;    // to save screen shots as PDFs, does not always wor
 
 //**************************** global variables ****************************
 pts P = new pts(); // class containing array of points, used to standardize GUI
+int maxRegionCount = 64;
+pts [] Region = new pts[maxRegionCount]; // array of region
 pts split_P;
 pts done_P;
 pts remain_P;
@@ -12,6 +14,7 @@ boolean animate=true, fill=false, timing=false;
 boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpoations
 int ms=0, me=0; // milli seconds start and end for timing
 int npts=20000; // number of points
+int newPoly = 0; // number of new polygon cut out
 pt A = P(100,100); pt B = P(300,300);
 boolean locked = false;
 boolean overBox = false;
@@ -26,7 +29,10 @@ void setup()               // executed once at the begining
   P.declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS 
   // P.resetOnCircle(4); // sets P to have 4 points and places them in a circle on the canvas
   P.loadPts("data/pts");  // loads points form file saved with this program
-  } // end of setup
+  for (int r=0; r<maxRegionCount; r++){
+    Region[r] = new pts(); 
+  }
+} // end of setup
 
 //**************************** display current frame ****************************
 void draw()      // executed at each frame
@@ -34,9 +40,9 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
-    pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polyloop with vertex labels
+    pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polylon with vertex labels
     stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
-    
+    Region[newPoly] = P;
     //x = mouseX;
     //y = mouseY;
     //if (mousePressed) {
@@ -51,16 +57,19 @@ void draw()      // executed at each frame
     //}
     
     boolean goodSplit = P.splitBy(A,B);
-    if (goodSplit) {
+    if (goodSplit == true) {
+      //newPoly++;
       pen(green,5);
       cutPolygons();
+      split_P.declare();
     }else{
       pen(red,7);
     }
     
     arrow(A,B);
-    
+    pen(black,3);
     showId(A,"A"); showId(B,"B");
+
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B
 
 
