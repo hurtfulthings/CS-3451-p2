@@ -63,7 +63,7 @@ void cutPolygons() {
   split_P = new pts();
   done_P = new pts();
   remain_P = new pts();
-  activePolygons.add(new Polygon(new float[]{3, width-3, width-3, 3}, new float[]{3, 3, height-3, height-3}, random(TWO_PI), TWO_PI/8));
+  //activePolygons.add(new Polygon(new float[]{3, width-3, width-3, 3}, new float[]{3, 3, height-3, height-3}, random(TWO_PI), TWO_PI/8));
 }
 
   
