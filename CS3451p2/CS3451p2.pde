@@ -45,19 +45,6 @@ void draw()      // executed at each frame
     pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polylon with vertex labels
     stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
     Region[newPoly] = P;
-    //x = mouseX;
-    //y = mouseY;
-    //if (mousePressed) {
-    //  if (x != 0 && y != 0){
-    //  A.x = pmouseX;
-    //  A.y = pmouseY;
-    //  B.x = x;
-    //  B.y = y;
-    //  pen(blue,5);
-    //  edge(A,B);
-    //  }
-    //}
-    
     
     boolean goodSplit = P.splitBy(A,B);
     if (goodSplit == true) {

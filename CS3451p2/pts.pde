@@ -301,9 +301,11 @@ class pts
    int n(int v) {return (v+1)%nv;}
    int p(int v) {return (v + nv - 1)%nv;}
    boolean splitBy(pt A, pt B){
+     boolean valid = true;
+     boolean notValid = false;
      int r = 0, g = 0, b = 0;
-     float intersect1 = float.POSITIVE_INFINITY; // point A
-     float intersect2 = float.NEGATIVE_INFINITY; // point B
+     float intersect1 = Float.POSITIVE_INFINITY; // point A
+     float intersect2 = Float.NEGATIVE_INFINITY; // point B
      pt firstIntersect = P();
      pt secondIntersect = P();
      for (int v = 0; v < nv; v++){
@@ -313,13 +315,13 @@ class pts
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
          pt X = P(A,t,V);
          if(t < 0) {pen(red,2); r++;}
-         if(0 <= t && t <= 1) {
-           pen(green, 5); 
+         if(0 < t && t < 1) {
+           pen(green, 2); 
            g++;
-           if(t<intersect1){
+           if(intersect1>t){
              intersect1 = t;
            }
-           if(t>intersect2){
+           if(intersect2<t){
              intersect2 = t;
            }
          }
@@ -327,15 +329,13 @@ class pts
          show(X,4);
          }
      }
-     if(r%2 == 0){
-       return false;
+     if((r%2 == b%2) && (g == 0) && (r%2 != 0)){ // cut line has to be inside the shape
+       pen(green,2);
+       return valid;
+     }else{
+       pen(red,2);
+       return notValid;
      }
-    //if (r == b){
-    //  if ((r%2)== 1){
-    //    valid = true;
-    //  }
-    //}
-    return g==0;
-  }
+   }
   
 }  // end class pts
