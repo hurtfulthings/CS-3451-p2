@@ -1,4 +1,4 @@
-// Template for 2D projects
+ // Template for 2D projects
 // Author: Jarek ROSSIGNAC
 import processing.pdf.*;    // to save screen shots as PDFs, does not always work: accuracy problems, stops drawing or messes up some curves !!!
 

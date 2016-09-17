@@ -317,5 +317,24 @@ class pts
      
      
      }
+     
+     void performSplit(pt A, pt B)
+     {
+     float param1 = Float.NEGATIVE_INFINITY; //params will be replaced by actual values
+     float param2 = Float.POSITIVE_INFINITY;
+     vec V = V(A,B);
+     for (int v = 0; v < nv; v++)
+       if(LineStabsEdge(A,B,G[v],G[n(v)]))
+         {
+         float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
+         if (t < 0 && t > param1) param1 = t;
+         if (t > 0 && t < param2) param2 = t;
+         } 
+      pt pointAr = P(A, param1, V);
+      pt pointAl = pointAr;
+      pt pointBr = P(A, param2, V);
+      pt pointBl = pointBr;
+      pen(black, 3); edge(pointAr, pointBr);
+    }
   
   }  // end class pts
