@@ -302,8 +302,10 @@ class pts
    int p(int v) {return (v + nv - 1)%nv;}
    boolean splitBy(pt A, pt B){
      int r = 0, g = 0, b = 0;
-     //pt firstIntersect = P();
-     //pt secondIntersect = P();
+     float intersect1 = float.POSITIVE_INFINITY; // point A
+     float intersect2 = float.NEGATIVE_INFINITY; // point B
+     pt firstIntersect = P();
+     pt secondIntersect = P();
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)]))
          {
@@ -314,6 +316,12 @@ class pts
          if(0 <= t && t <= 1) {
            pen(green, 5); 
            g++;
+           if(t<intersect1){
+             intersect1 = t;
+           }
+           if(t>intersect2){
+             intersect2 = t;
+           }
          }
          if(1 < t) {pen(blue, 2); b++;}
          show(X,4);
