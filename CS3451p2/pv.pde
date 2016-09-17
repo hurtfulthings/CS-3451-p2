@@ -231,25 +231,23 @@ pt projectionOnLine(pt P, pt A, pt B) {return P(A,dot(V(A,B),V(A,P))/dot(V(A,B),
 //************************************************************************
 // display 
 
-boolean LineStabsEdge(pt A, pt B, pt C, pt D)
-  {
-  vec vectorAb = V(A,B);
-  vec vectorCa = V(C,A);
+boolean LineStabsEdge(pt A, pt B, pt C, pt D){
+  vec vectorAB = V(A,B);
+  vec vectorCA = V(C,A);
   //vec vectorCd = V(C,D);
-  vec vectorDa = V(D,A);
+  vec vectorDA = V(D,A);
   
-  float det1 = det(vectorAb, vectorCa);
-  float det2 = det(vectorAb, vectorDa);
+  float det1 = det(vectorAB, vectorCA);
+  float det2 = det(vectorAB, vectorDA);
   
   return det1 * det2 < 0.0f; //det products should have opposite sign if line is stabbed
   }
   
-  float RayEdgeCrossParameter(pt P, vec V, pt A, pt B)
-    {
-      vec AB = V(A,B), AP = V(A,P);
-      if (abs(det(AB, V))<0.00001) return 0;
-      return -((det(AB,AP))/(det(AB,V)));
-    }
+float RayEdgeCrossParameter(pt P, vec V, pt A, pt B){
+  vec AB = V(A,B), AP = V(A,P);
+  if (abs(det(AB, V))<0.00001) return 0;
+  return -det(AB,AP)/det(AB,V);
+ }
 
 //************************************************************************
 //**** TRIANGLES

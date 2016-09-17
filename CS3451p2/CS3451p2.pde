@@ -6,6 +6,8 @@ import processing.pdf.*;    // to save screen shots as PDFs, does not always wor
 pts P = new pts(); // class containing array of points, used to standardize GUI
 int maxRegionCount = 64;
 pts [] Region = new pts[maxRegionCount]; // array of region
+pts [] VictimEdges = new pts [2]; // array of first vertex and last vertex on the two
+                                 // edges being cut
 pts split_P;
 pts done_P;
 pts remain_P;
@@ -56,6 +58,7 @@ void draw()      // executed at each frame
     //  }
     //}
     
+    
     boolean goodSplit = P.splitBy(A,B);
     if (goodSplit == true) {
       //newPoly++;
@@ -67,8 +70,8 @@ void draw()      // executed at each frame
     }
     
     arrow(A,B);
-    pen(black,3);
-    showId(A,"A"); showId(B,"B");
+    //pen(black,3);
+    //showId(A,"A"); showId(B,"B");
 
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B
 

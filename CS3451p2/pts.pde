@@ -300,29 +300,34 @@ class pts
 // SPLIT
    int n(int v) {return (v+1)%nv;}
    int p(int v) {return (v + nv - 1)%nv;}
-   boolean splitBy(pt A, pt B)
-     {
+   boolean splitBy(pt A, pt B){
      int r = 0, g = 0, b = 0;
-     boolean valid = false;
-     for (int v = 0; v < nv; v++)
+     //pt firstIntersect = P();
+     //pt secondIntersect = P();
+     for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)]))
          {
          vec V = V(A,B);
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
          pt X = P(A,t,V);
          if(t < 0) {pen(red,2); r++;}
-         if(0 <= t && t <= 1) {pen(green, 5); g++;}
+         if(0 <= t && t <= 1) {
+           pen(green, 5); 
+           g++;
+         }
          if(1 < t) {pen(blue, 2); b++;}
          show(X,4);
          }
+     }
+     if(r%2 == 0){
+       return false;
+     }
     //if (r == b){
     //  if ((r%2)== 1){
     //    valid = true;
     //  }
     //}
     return g==0;
-     
-     
-     }
+  }
   
-  }  // end class pts
+}  // end class pts
