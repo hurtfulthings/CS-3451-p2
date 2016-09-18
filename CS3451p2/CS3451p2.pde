@@ -49,7 +49,7 @@ void draw()      // executed at each frame
     boolean goodSplit = P.splitBy(A,B);
     if (goodSplit == true) {
       //newPoly++;
-      pen(green,5);
+      P.performSplit(A,B);
       cutPolygons();
       split_P.declare();
     }else{

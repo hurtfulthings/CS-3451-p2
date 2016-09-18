@@ -304,15 +304,7 @@ class pts
      boolean valid = true;
      boolean notValid = false;
      int r = 0, g = 0, b = 0;
-     float interPt1 = Float.NEGATIVE_INFINITY; // params will be replaced by
-                                               // actual value of point A
-     float interPt2 = Float.POSITIVE_INFINITY; // params will be replaced by
-                                               // actual value of point B
      vec V = V(A,B);                                         
-     pt A_r = P();
-     pt A_l = P();
-     pt B_r = P();
-     pt B_l = P();
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)]))
          {
@@ -321,12 +313,6 @@ class pts
          if(0 < t && t < 1) {
            pen(green, 2); 
            g++;
-           if(t > interPt1){
-             interPt1 = t;
-           }
-           if(t < interPt2){
-             interPt2 = t;
-           }
          }
          if(1 < t) {pen(blue, 2); b++;}
          //show(X,4);
@@ -334,11 +320,6 @@ class pts
      }
      if((r%2 == b%2) && (g == 0) && (r%2 != 0)){ // cut line has to be inside the shape
        pen(green,2);
-       A_r = P(A,interPt1,V); // vertex A of the shape we keep for next split
-       B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
-       A_l = A_r; // vertex A of the cut-out piece
-       B_l = B_r; // vertex B of the cut-out piece
-       pen(black, 3); edge(A_r, B_r);
        return valid;
      }else{
        pen(red,2);
@@ -357,21 +338,20 @@ class pts
      pt B_r = P();
      pt B_l = P();
      for (int v = 0; v < nv; v++){
-       if(LineStabsEdge(A,B,G[v],G[n(v)]))
-         {
+       if(LineStabsEdge(A,B,G[v],G[n(v)])){
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
-         if(t < 0 && t > interPt1) {
+         if(t <= 1 && t > interPt1) {
            interPt1 = t;
          }
-         if(t > 0 && t < interPt2){
+         if(t >= 0 && t < interPt2){
              interPt2 = t;
          }
-       A_r = P(A,interPt1,V); // vertex A of the shape we keep for next split
-       B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
-       A_l = A_r; // vertex A of the cut-out piece
-       B_l = B_r; // vertex B of the cut-out piece
-       pen(black, 3); edge(A_r, B_r);
-      }
+       }
     }
+    A_r = P(A,interPt1,V); // vertex A of the shape we keep for next split
+    B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
+    A_l = A_r; // vertex A of the cut-out piece
+    B_l = B_r; // vertex B of the cut-out piece
+    pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
   };
   }  // end class pts
