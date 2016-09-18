@@ -295,47 +295,83 @@ class pts
       G[k].setTo(x,y);
       };
     pv=0;
-    };
-   
-// SPLIT
+    }; 
+  
+  // SPLIT
    int n(int v) {return (v+1)%nv;}
    int p(int v) {return (v + nv - 1)%nv;}
    boolean splitBy(pt A, pt B){
      boolean valid = true;
      boolean notValid = false;
      int r = 0, g = 0, b = 0;
-     float intersect1 = Float.POSITIVE_INFINITY; // point A
-     float intersect2 = Float.NEGATIVE_INFINITY; // point B
-     pt firstIntersect = P();
-     pt secondIntersect = P();
+     float interPt1 = Float.NEGATIVE_INFINITY; // params will be replaced by
+                                               // actual value of point A
+     float interPt2 = Float.POSITIVE_INFINITY; // params will be replaced by
+                                               // actual value of point B
+     vec V = V(A,B);                                         
+     pt A_r = P();
+     pt A_l = P();
+     pt B_r = P();
+     pt B_l = P();
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)]))
          {
-         vec V = V(A,B);
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
-         pt X = P(A,t,V);
          if(t < 0) {pen(red,2); r++;}
          if(0 < t && t < 1) {
            pen(green, 2); 
            g++;
-           if(intersect1>t){
-             intersect1 = t;
+           if(t > interPt1){
+             interPt1 = t;
            }
-           if(intersect2<t){
-             intersect2 = t;
+           if(t < interPt2){
+             interPt2 = t;
            }
          }
          if(1 < t) {pen(blue, 2); b++;}
-         show(X,4);
+         //show(X,4);
          }
      }
      if((r%2 == b%2) && (g == 0) && (r%2 != 0)){ // cut line has to be inside the shape
        pen(green,2);
+       A_r = P(A,interPt1,V); // vertex A of the shape we keep for next split
+       B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
+       A_l = A_r; // vertex A of the cut-out piece
+       B_l = B_r; // vertex B of the cut-out piece
+       pen(black, 3); edge(A_r, B_r);
        return valid;
      }else{
        pen(red,2);
        return notValid;
      }
-   }
+   };
   
-}  // end class pts
+  void performSplit(pt A, pt B){
+     float interPt1 = Float.NEGATIVE_INFINITY; // params will be replaced by
+                                               // actual value of point A
+     float interPt2 = Float.POSITIVE_INFINITY; // params will be replaced by
+                                               // actual value of point B
+     vec V = V(A,B);                                         
+     pt A_r = P();
+     pt A_l = P();
+     pt B_r = P();
+     pt B_l = P();
+     for (int v = 0; v < nv; v++){
+       if(LineStabsEdge(A,B,G[v],G[n(v)]))
+         {
+         float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
+         if(t < 0 && t > interPt1) {
+           interPt1 = t;
+         }
+         if(t > 0 && t < interPt2){
+             interPt2 = t;
+         }
+       A_r = P(A,interPt1,V); // vertex A of the shape we keep for next split
+       B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
+       A_l = A_r; // vertex A of the cut-out piece
+       B_l = B_r; // vertex B of the cut-out piece
+       pen(black, 3); edge(A_r, B_r);
+      }
+    }
+  };
+  }  // end class pts

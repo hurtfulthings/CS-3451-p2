@@ -247,7 +247,7 @@ float RayEdgeCrossParameter(pt P, vec V, pt A, pt B){
   vec AB = V(A,B), AP = V(A,P);
   if (abs(det(AB, V))<0.00001) return 0;
   return -det(AB,AP)/det(AB,V);
- }
+   }
 
 //************************************************************************
 //**** TRIANGLES
