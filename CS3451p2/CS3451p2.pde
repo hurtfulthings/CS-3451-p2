@@ -6,10 +6,8 @@ import processing.pdf.*;    // to save screen shots as PDFs, does not always wor
 pts P = new pts(); // class containing array of points, used to standardize GUI
 int maxRegionCount = 64;
 pts [] Region = new pts[maxRegionCount]; // array of region
-pts [] VictimEdges = new pts [2]; // array of first vertex and last vertex on the two
-                                 // edges being cut
-pts split_P;
-pts done_P;
+
+pts cutPiece_P;
 pts remain_P;
 float t=0, f=0;
 boolean animate=true, fill=false, timing=false;
@@ -34,6 +32,7 @@ void setup()               // executed once at the begining
   for (int r=0; r<maxRegionCount; r++){
     Region[r] = new pts(); 
   }
+  Region[0] = P;
 } // end of setup
 
 //**************************** display current frame ****************************
@@ -42,23 +41,26 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
-    pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polylon with vertex labels
-    stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
-    Region[newPoly] = P;
+    pen(black,3); fill(yellow); Region[0].drawCurve(); Region[0].IDs(); // shows polylon with vertex labels
+    stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
     
-    boolean goodSplit = P.splitBy(A,B);
+    boolean goodSplit = Region[0].splitBy(A,B);
     if (goodSplit == true) {
       //newPoly++;
-      P.performSplit(A,B);
+      Region[0].performSplit(A,B);
       cutPolygons();
-      split_P.declare();
+      //split_P.declare();
+      for (int r=0; r<maxRegionCount; r++){
+        if(Region[r] == null){
+          
+        }
+      }
     }else{
       pen(red,7);
     }
     
-    arrow(A,B);
-    //pen(black,3);
-    //showId(A,"A"); showId(B,"B");
+    //arrow(A,B);
+    
 
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B
 
@@ -75,8 +77,7 @@ void draw()      // executed at each frame
   }  // end of draw
   
 void cutPolygons() {
-  split_P = new pts();
-  done_P = new pts();
+  cutPiece_P = new pts();
   remain_P = new pts();
 }
 
