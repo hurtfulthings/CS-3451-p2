@@ -7,6 +7,7 @@ pts P = new pts(); // class containing array of points, used to standardize GUI
 int maxRegionCount = 64;
 pts [] Region = new pts[maxRegionCount]; // array of region
 
+pts verticesToSave = new pts();
 pts cutPiece_P = new pts();
 pts remain_P = new pts();
 float t=0, f=0;
@@ -14,7 +15,11 @@ boolean animate=true, fill=false, timing=false;
 boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpoations
 int ms=0, me=0; // milli seconds start and end for timing
 int npts=20000; // number of points
-int newVertices = 0; // number of new polygon cut out
+int next = 0; // next index of region array
+int previous = 0; // previous region in the array
+int current = 0; // current region in the array
+int newVertices = 0; // index of vertices of the new polygon
+int oldVertices = 0; // index of vertices of the old polygon
 pt A = P(100,100); pt B = P(300,300);
 boolean locked = false;
 boolean overBox = false;
@@ -29,6 +34,7 @@ void setup()               // executed once at the begining
   P.declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS
   cutPiece_P.declare(); // declares all points in the cut polygon. MUST BE DONE BEFORE ADDING POINTS
   remain_P.declare(); // declares all points in the remaining polygon. MUST BE DONE BEFORE ADDING POINTS
+  verticesToSave.declare();
   // P.resetOnCircle(4); // sets P to have 4 points and places them in a circle on the canvas
   P.loadPts("data/pts");  // loads points form file saved with this program
   for (int r=0; r<maxRegionCount; r++){
@@ -48,21 +54,20 @@ void draw()      // executed at each frame
     
     boolean goodSplit = Region[0].splitBy(A,B);
     if (goodSplit == true) {
+      int firstIndFind = 0;
+      int lastIndFind = 0;
       //newPoly++;
-      cutPiece_P = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
-      remain_P = Region[0].performSplit(A,B); // remain_P has vertices A_r & B_r of the remaining piece
-      //cutPolygons();
-      //split_P.declare();
-      for (int r=0; r<maxRegionCount; r++){
-        if(Region[maxRegionCount - 1] == null && (r+1)<maxRegionCount){
-          if(Region[r] != null && Region[r+1] == null){
-             Region[r+1] = Region[r]; 
-          }
-        }
-      }
-      //while ( // start adding new polygon to the Region[]
-      //Region[0] = ; // always store the remaining shape as the first item in the array
-                      // and the original polygon as the last item
+      verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
+      firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
+      lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
+      
+      
+      //while (count_l != Region[0].getFirstIndexPts()){ // start adding new polygon to the Region[]
+      //  remain_P.insertPt(Region[0].getPt(count_l));
+      //  count_l--;
+      //}
+      //Region[0] = remain_P; // always store the remaining shape as the first item in the array
+      //                // and the original polygon as the last item
     }else{
       pen(red,7);
     }
@@ -84,9 +89,36 @@ void draw()      // executed at each frame
   change=false; // to avoid capturing movie frames when nothing happens
   }  // end of draw
   
+//*****************************************************************************
+//************************************************************************
+//**** HELPER POLYGON METHODS
+//************************************************************************
+  
 //void cutPolygons() {
 //  cutPiece_P = new pts();
 //  remain_P = new pts();
 //}
-
+  pts createRemainPoly(pts[] R, int s, int e, pt A, pt B, pts P){  // inserts new polygon region in front of the original
+    P.insertPt(A);
+    for (int v = s+1; v < e; v++){
+      P.insertPt(R[2].getPt(v));
+    }
+    P.insertPt(B);
+    //for (int r=0; r< maxRegionCount; r++){ // loop to make space for the newest polygon
+    //    if(Region[maxRegionCount - 1] == null && (r+1)<maxRegionCount){
+    //      if(Region[r] != null && Region[r+1] == null){
+    //         Region[r+1] = Region[r]; 
+    //      }
+    //    }
+    //  }
+  return P;
+  }
   
+  pts createPuzzlePoly(pts[] R, int s, int e, pt A, pt B, pts P){
+    P.insertPt(A);
+    while(R[2].getPt(R[2].p(s))!= R[2].getPt(e)){
+      s = R[2].p(s);
+    }
+    P.insertPt(B);
+  return P;
+  }

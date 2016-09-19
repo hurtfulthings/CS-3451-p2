@@ -10,6 +10,8 @@ class pts
   int pv = 0;                              // picked vertex 
   int iv = 0;                              // insertion index 
   int maxnv = 100*2*2*2*2*2*2*2*2;         //  max number of vertices
+  int firstIndFind = 0;                    // first index to be recorded
+  int secondIndFind = 0;                   // last index to be recorded
   Boolean loop=true;                       // is a closed loop
 
   pt[] G = new pt [maxnv];                 // geometry table (vertices)
@@ -55,6 +57,9 @@ class pts
      for (int j=0; j<w; j++) 
        addPt(P(.7*height*j/(w-1)+.1*height,.7*height*i/(w-1)+.1*height));
    }    
+   
+  // GET POINT
+  pt getPt(int v){ return G[v];}
 
 
   // PICK AND EDIT INDIVIDUAL POINT
@@ -337,18 +342,24 @@ class pts
      vec V = V(A,B);                                         
      pt A_r = P();
      pt B_r = P();
-     pt startPt = P();
-     pt endPt = P();
+     pt startPt_r = P();
+     pt startPt_l = P();
+     pt endPt_r = P();
+     pt endPt_l = P();
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)])){
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
          if(t <= 1 && t > interPt1) {
            interPt1 = t;
-           startPt = G[v]; // save the first point of the edge to be cut
+           startPt_r = G[v]; // save the first point of the edge to be cut
+           startPt_l = G[n(v)];
+           firstIndFind = v;
          }
          if(t >= 0 && t < interPt2){
              interPt2 = t;
-             endPt = G[n(v)]; // save the last point of the opposite edge to be cut
+             endPt_r = G[n(v)]; // save the last point of the opposite edge to be cut
+             endPt_l = G[v];
+             secondIndFind = n(v);
          }
        }
     }
@@ -356,12 +367,24 @@ class pts
     B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
    // A_l = A_r; // vertex A of the cut-out piece
    // B_l = B_r; // vertex B of the cut-out piece
-    verticesOfCut.insertPt(startPt);
-    verticesOfCut.insertPt(endPt);
+    verticesOfCut.insertPt(startPt_r);
+    verticesOfCut.insertPt(endPt_r);
     verticesOfCut.insertPt(B_r);
     verticesOfCut.insertPt(A_r);
     pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
-    pen(magenta, 3); showId(startPt,"S"); showId(endPt,"E"); 
+    pen(magenta, 3); showId(startPt_r,"S"); showId(endPt_r,"E"); 
+    pen(cyan, 3); showId(startPt_l,"S1"); showId(endPt_l,"E1"); 
     return verticesOfCut;
   };
+  
+  int getIndPts(pts G, pt P){ 
+    int i = 0;
+    for(int v = 0; v < nv; v++){
+      if(G.getPt(v) == P){
+        i = v;
+      }
+    }
+    return i;
+  };
+
   }  // end class pts
