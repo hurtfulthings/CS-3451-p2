@@ -129,16 +129,17 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
 
 void mousePressed()   // executed when the mouse is pressed
   {
-  if (!keyPressed || (key=='a') || (key=='i') || (key=='x'))  
-  P.pickClosest(Mouse()); // pick vertex closest to mouse: sets pv ("picked vertex") in pts
-  if (keyPressed) 
-     {
-     if (key=='a')  P.addPt(Mouse()); // appends vertex after the last one
-     if (key=='i')  P.insertClosestProjection(Mouse()); // inserts vertex at closest projection of mouse
-     if (key=='d')  P.deletePickedPt(); // deletes vertex closeset to mouse
-     } 
-  if (keyPressed && key=='s') {A=Mouse(); B=Mouse();} 
-  A = Mouse();
+  //if (!keyPressed || (key=='a') || (key=='i') || (key=='x'))  
+  //P.pickClosest(Mouse()); // pick vertex closest to mouse: sets pv ("picked vertex") in pts
+  //if (keyPressed) 
+  //   {
+  //   if (key=='a')  P.addPt(Mouse()); // appends vertex after the last one
+  //   if (key=='i')  P.insertClosestProjection(Mouse()); // inserts vertex at closest projection of mouse
+  //   if (key=='d')  P.deletePickedPt(); // deletes vertex closeset to mouse
+  //   } 
+  //if (keyPressed && key=='s') {A=Mouse(); B=Mouse();} 
+  A.x = mouseX; A.y = mouseY;
+  B.x = mouseX; B.y = mouseY;
   change=true;
   }
 
@@ -150,15 +151,15 @@ void mouseReleased()   // executed when the mouse is pressed
 
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)
   {
-  if (!keyPressed || (key=='a')|| (key=='i')) P.dragPicked();   // drag selected point with mouse
-  if (keyPressed) {
-      if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
-      if (key=='t') P.dragAll(); // move all vertices
-      if (key=='r') P.rotateAllAroundCentroid(Mouse(),Pmouse()); // turn all vertices around their center of mass
-      if (key=='z') P.scaleAllAroundCentroid(Mouse(),Pmouse()); // scale all vertices with respect to their center of mass
-      }
-  if (keyPressed && key=='s') B=Mouse(); 
-  B=Mouse();
+  //if (!keyPressed || (key=='a')|| (key=='i')) P.dragPicked();   // drag selected point with mouse
+  //if (keyPressed) {
+  //    if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
+  //    if (key=='t') P.dragAll(); // move all vertices
+  //    if (key=='r') P.rotateAllAroundCentroid(Mouse(),Pmouse()); // turn all vertices around their center of mass
+  //    if (key=='z') P.scaleAllAroundCentroid(Mouse(),Pmouse()); // scale all vertices with respect to their center of mass
+  //    }
+  //if (keyPressed && key=='s') B=Mouse(); 
+  B.x = mouseX; B.y = mouseY;
   change=true;
   }  
 

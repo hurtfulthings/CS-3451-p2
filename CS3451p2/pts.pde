@@ -313,7 +313,7 @@ class pts
          if(1 < t) {pen(blue, 2); b++;}
          show(X,4);
          }
-    return g == 0;
+    return g == 0 && (r % 2 != 0);
      
      
      }
