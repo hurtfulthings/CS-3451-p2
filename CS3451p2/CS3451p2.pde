@@ -49,25 +49,18 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
+    pen(black,3); Region[Region.length-1].drawCurve();
     pen(black,3); fill(yellow); Region[0].drawCurve(); Region[0].IDs(); // shows polylon with vertex labels
     stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
     
     boolean goodSplit = Region[0].splitBy(A,B);
     if (goodSplit == true) {
-      int firstIndFind = 0;
-      int lastIndFind = 0;
-      //newPoly++;
       verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
-      firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
-      lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
-      
-      
-      //while (count_l != Region[0].getFirstIndexPts()){ // start adding new polygon to the Region[]
-      //  remain_P.insertPt(Region[0].getPt(count_l));
-      //  count_l--;
-      //}
-      //Region[0] = remain_P; // always store the remaining shape as the first item in the array
-      //                // and the original polygon as the last item
+      pt firstInd_A = verticesToSave.getPt(0);
+      pt lastInd_A = verticesToSave.getPt(2);
+      pt firstInd_B = verticesToSave.getPt(3);
+      pt lastInd_B = verticesToSave.getPt(5);
+      cutPiece_P = createPuzzlePoly(Region, int s, int e, pt A, pt B, pts P);
     }else{
       pen(red,7);
     }
@@ -104,13 +97,6 @@ void draw()      // executed at each frame
       P.insertPt(R[2].getPt(v));
     }
     P.insertPt(B);
-    //for (int r=0; r< maxRegionCount; r++){ // loop to make space for the newest polygon
-    //    if(Region[maxRegionCount - 1] == null && (r+1)<maxRegionCount){
-    //      if(Region[r] != null && Region[r+1] == null){
-    //         Region[r+1] = Region[r]; 
-    //      }
-    //    }
-    //  }
   return P;
   }
   
@@ -122,3 +108,4 @@ void draw()      // executed at each frame
     P.insertPt(B);
   return P;
   }
+  
