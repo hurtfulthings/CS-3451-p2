@@ -49,21 +49,22 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
-<<<<<<< HEAD
-    pen(black,3); Region[Region.length-1].drawCurve();
-    pen(black,3); fill(yellow); Region[0].drawCurve(); Region[0].IDs(); // shows polylon with vertex labels
-    stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
+
+    //pen(black,3); Region[Region.length-1].drawCurve();
+    //pen(black,3); fill(yellow); Region[0].drawCurve(); Region[0].IDs(); // shows polylon with vertex labels
+    //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
     
-    boolean goodSplit = Region[0].splitBy(A,B);
-    if (goodSplit == true) {
-      verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
-      pt firstInd_A = verticesToSave.getPt(0);
-      pt lastInd_A = verticesToSave.getPt(2);
-      pt firstInd_B = verticesToSave.getPt(3);
-      pt lastInd_B = verticesToSave.getPt(5);
-      cutPiece_P = createPuzzlePoly(Region, int s, int e, pt A, pt B, pts P);
-=======
+    //boolean goodSplit = Region[0].splitBy(A,B);
+    //if (goodSplit == true) {
+    //  verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
+    //  pt firstInd_A = verticesToSave.getPt(0);
+    //  pt lastInd_A = verticesToSave.getPt(2);
+    //  pt firstInd_B = verticesToSave.getPt(3);
+    //  pt lastInd_B = verticesToSave.getPt(5);
+    //  cutPiece_P = createPuzzlePoly(Region, int s, int e, pt A, pt B, pts P);
+
     pen(black,3);
+    Region[0].drawCurve(); Region[0].IDs();
     fill(yellow);
     Region[current].drawCurve(); Region[current].IDs(); // shows polyloop with vertex labels
       
@@ -87,7 +88,7 @@ void draw()      // executed at each frame
       //}
       //Region[0] = remain_P; // always store the remaining shape as the first item in the array
       //                // and the original polygon as the last item
->>>>>>> beeffda5c35d7b5f709ce7281a8e93f666801b9e
+
     }else{
       pen(red,7);
     }
