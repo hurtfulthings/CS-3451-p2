@@ -342,24 +342,24 @@ class pts
      vec V = V(A,B);                                         
      pt A_r = P();
      pt B_r = P();
-     pt startPt_r = P();
-     pt startPt_l = P();
-     pt endPt_r = P();
-     pt endPt_l = P();
-     pt currentVtx = P();
+     int startPt_r = 0;
+     int startPt_l = 0;
+     int endPt_r = 0;
+     int endPt_l = 0;
+     int currentVtx;
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)])){
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
          if(t <= 1 && t > interPt1) {
            interPt1 = t;
-           endPt_r = G[v]; // save the first point of the edge to be cut
-           startPt_l = G[n(v)];
+           endPt_r = v; // save the first point of the edge to be cut
+           startPt_l = n(v);
            firstIndFind = v;
          }
          if(t >= 0 && t < interPt2){
              interPt2 = t;
-             startPt_r = G[n(v)]; // save the last point of the opposite edge to be cut
-             endPt_l = G[v];
+             startPt_r = n(v); // save the last point of the opposite edge to be cut
+             endPt_l = v;
              secondIndFind = n(v);
          }
        }
@@ -369,14 +369,17 @@ class pts
    // A_l = A_r; // vertex A of the cut-out piece
    // B_l = B_r; // vertex B of the cut-out piece
     verticesOfCut.insertPt(B_r);
-    verticesOfCut.insertPt(startPt_r);
-    currentVtx = startPt_r;
-    //while()
-    verticesOfCut.insertPt(endPt_r);
-    verticesOfCut.insertPt(B_r);
+    verticesOfCut.insertPt(G[startPt_r]);
+    currentVtx = n(startPt_r);
+    while(currentVtx != endPt_r) {
+      verticesOfCut.insertPt(G[currentVtx]);
+      currentVtx = n(currentVtx);
+    }
+    verticesOfCut.insertPt(G[endPt_r]);
+    verticesOfCut.insertPt(A_r);
     pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
-    pen(magenta, 3); showId(startPt_r,"S"); showId(endPt_r,"E"); 
-    pen(cyan, 3); showId(startPt_l,"S1"); showId(endPt_l,"E1"); 
+    //pen(magenta, 3); showId(startPt_r,"S"); showId(endPt_r,"E"); 
+    //pen(cyan, 3); showId(startPt_l,"S1"); showId(endPt_l,"E1"); 
     return verticesOfCut;
   };
   
@@ -389,5 +392,10 @@ class pts
     }
     return i;
   };
+  
+  Boolean isEmpty()
+  {
+   return this.nv == 0;
+  }
 
   }  // end class pts

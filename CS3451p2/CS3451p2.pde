@@ -49,18 +49,23 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
-    pen(black,3); fill(yellow); Region[0].drawCurve(); Region[0].IDs(); // shows polylon with vertex labels
-    stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
-    
-    boolean goodSplit = Region[0].splitBy(A,B);
-    if (goodSplit == true) {
-      int firstIndFind = 0;
-      int lastIndFind = 0;
-      //newPoly++;
-      verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
-      firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
-      lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
+    pen(black,3);
+    fill(yellow);
+    Region[current].drawCurve(); Region[current].IDs(); // shows polyloop with vertex labels
       
+    //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
+    
+    boolean goodSplit = Region[current].splitBy(A,B);
+    if (goodSplit) {
+      pen(green, 5);
+    //  int firstIndFind = 0;
+    //  int lastIndFind = 0;
+    //  //newPoly++;
+    //  verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
+    //  firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
+    //  lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
+      
+    //  Region[++current] = verticesToSave;
       
       //while (count_l != Region[0].getFirstIndexPts()){ // start adding new polygon to the Region[]
       //  remain_P.insertPt(Region[0].getPt(count_l));
