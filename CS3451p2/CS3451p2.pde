@@ -6,20 +6,19 @@ import processing.pdf.*;    // to save screen shots as PDFs, does not always wor
 pts P = new pts(); // class containing array of points, used to standardize GUI
 int maxRegionCount = 64;
 pts [] Region = new pts[maxRegionCount]; // array of region
+pts [] CutRegion = new pts[maxRegionCount]; // array of region
 
-pts verticesToSave = new pts();
-pts cutPiece_P = new pts();
-pts remain_P = new pts();
+pts verticesToSave_1 = new pts();
+pts verticesToSave_2 = new pts();
 float t=0, f=0;
 boolean animate=true, fill=false, timing=false;
 boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpoations
 int ms=0, me=0; // milli seconds start and end for timing
 int npts=20000; // number of points
-int next = 0; // next index of region array
-int previous = 0; // previous region in the array
+int original = 0; //
+int cut = 0; // next index of region array
+int cutPiece = 0; // previous region in the array
 int current = 0; // current region in the array
-int newVertices = 0; // index of vertices of the new polygon
-int oldVertices = 0; // index of vertices of the old polygon
 pt A = P(100,100); pt B = P(300,300);
 boolean locked = false;
 boolean overBox = false;
@@ -32,9 +31,8 @@ void setup()               // executed once at the begining
   smooth();                  // turn on antialiasing
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
   P.declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS
-  cutPiece_P.declare(); // declares all points in the cut polygon. MUST BE DONE BEFORE ADDING POINTS
-  remain_P.declare(); // declares all points in the remaining polygon. MUST BE DONE BEFORE ADDING POINTS
-  verticesToSave.declare();
+  verticesToSave_1.declare();
+  verticesToSave_2.declare();
   // P.resetOnCircle(4); // sets P to have 4 points and places them in a circle on the canvas
   P.loadPts("data/pts");  // loads points form file saved with this program
   for (int r=0; r<maxRegionCount; r++){
@@ -50,45 +48,17 @@ void draw()      // executed at each frame
   
     background(white); // clear screen and paints white background
 
-    //pen(black,3); Region[Region.length-1].drawCurve();
-    //pen(black,3); fill(yellow); Region[0].drawCurve(); Region[0].IDs(); // shows polylon with vertex labels
-    //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
-    
-    //boolean goodSplit = Region[0].splitBy(A,B);
-    //if (goodSplit == true) {
-    //  verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
-    //  pt firstInd_A = verticesToSave.getPt(0);
-    //  pt lastInd_A = verticesToSave.getPt(2);
-    //  pt firstInd_B = verticesToSave.getPt(3);
-    //  pt lastInd_B = verticesToSave.getPt(5);
-    //  cutPiece_P = createPuzzlePoly(Region, int s, int e, pt A, pt B, pts P);
-
-    pen(black,3);
-    Region[0].drawCurve(); Region[0].IDs();
+    pen(black,2);
+    Region[0].drawCurve();
+    fill(blue);
+    Region[cutPiece].drawCurve(); //Region[current].IDs(); // shows polyloop with vertex labels
     fill(yellow);
-    Region[current].drawCurve(); Region[current].IDs(); // shows polyloop with vertex labels
-      
+    Region[current].drawCurve(); 
     //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
     
     boolean goodSplit = Region[current].splitBy(A,B);
     if (goodSplit) {
       pen(green, 5);
-    //  int firstIndFind = 0;
-    //  int lastIndFind = 0;
-    //  //newPoly++;
-    //  verticesToSave = Region[0].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece
-    //  firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
-    //  lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
-      
-    //  Region[++current] = verticesToSave;
-      
-      //while (count_l != Region[0].getFirstIndexPts()){ // start adding new polygon to the Region[]
-      //  remain_P.insertPt(Region[0].getPt(count_l));
-      //  count_l--;
-      //}
-      //Region[0] = remain_P; // always store the remaining shape as the first item in the array
-      //                // and the original polygon as the last item
-
     }else{
       pen(red,7);
     }
@@ -115,10 +85,6 @@ void draw()      // executed at each frame
 //**** HELPER POLYGON METHODS
 //************************************************************************
   
-//void cutPolygons() {
-//  cutPiece_P = new pts();
-//  remain_P = new pts();
-//}
   pts createRemainPoly(pts[] R, int s, int e, pt A, pt B, pts P){  // inserts new polygon region in front of the original
     P.insertPt(A);
     for (int v = s+1; v < e; v++){

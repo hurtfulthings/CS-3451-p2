@@ -148,14 +148,22 @@ void mouseReleased()   // executed when the mouse is pressed
   //if (keyPressed && key=='s') B=Mouse();
   boolean goodSplit = Region[current].splitBy(A,B);
     if (goodSplit == true) {
-      int firstIndFind = 0;
-      int lastIndFind = 0;
-      verticesToSave = Region[current].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece //<>//
-      firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
-      lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
+      verticesToSave_1 = Region[current].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece //<>//
+      verticesToSave_2 = Region[current].performSplit(B,A); 
+      cutPiece++;
+      current = cutPiece + 1;
+      int count_1 = verticesToSave_1.getNumVtx();
+      int count_2 = verticesToSave_2.getNumVtx();
+      if (count_1 > count_2){
+        Region[cutPiece] = verticesToSave_2;
+        Region[current] = verticesToSave_1;
+        CutRegion[cut] = verticesToSave_2;
+      }else{
+        Region[cutPiece] = verticesToSave_1;
+        Region[current] = verticesToSave_2;
+        CutRegion[cut] = verticesToSave_1;
+      }
       
-      Region[++current] = Region[current];
-      Region[current] = verticesToSave;
       
     }
     change=true;

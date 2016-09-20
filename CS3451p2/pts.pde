@@ -349,9 +349,7 @@ class pts
      //pt startPt_B = P();
 
      int startPt_r = 0;
-     int startPt_l = 0;
      int endPt_r = 0;
-     int endPt_l = 0;
      int currentVtx;
 
      for (int v = 0; v < nv; v++){
@@ -364,19 +362,12 @@ class pts
            //endPt_A = G[n(v)];
 
            endPt_r = v; // save the first point of the edge to be cut
-           startPt_l = n(v);
-
-           firstIndFind = v;
          }
          if(t >= 0 && t < interPt2){
              interPt2 = t;
-
              //endPt_B = G[n(v)]; // save the last point of the opposite edge to be cut
              //startPt_B = G[v];
              startPt_r = n(v); // save the last point of the opposite edge to be cut
-             endPt_l = v;
-
-             secondIndFind = n(v);
          }
        }
     }
@@ -422,9 +413,13 @@ class pts
     return i;
   };
   
+  int getNumVtx(){
+    return nv;
+  }
+  
   Boolean isEmpty()
   {
    return this.nv == 0;
-  }
+  };
 
   }  // end class pts
