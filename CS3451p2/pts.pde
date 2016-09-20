@@ -368,15 +368,15 @@ class pts
     B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
    // A_l = A_r; // vertex A of the cut-out piece
    // B_l = B_r; // vertex B of the cut-out piece
-    verticesOfCut.insertPt(B_r);
-    verticesOfCut.insertPt(G[startPt_r]);
+    verticesOfCut.addPt(B_r);
+    verticesOfCut.addPt(G[startPt_r]);
     currentVtx = n(startPt_r);
     while(currentVtx != endPt_r) {
       verticesOfCut.insertPt(G[currentVtx]);
       currentVtx = n(currentVtx);
     }
-    verticesOfCut.insertPt(G[endPt_r]);
-    verticesOfCut.insertPt(A_r);
+    verticesOfCut.addPt(G[endPt_r]);
+    verticesOfCut.addPt(A_r);
     pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
     //pen(magenta, 3); showId(startPt_r,"S"); showId(endPt_r,"E"); 
     //pen(cyan, 3); showId(startPt_l,"S1"); showId(endPt_l,"E1"); 
