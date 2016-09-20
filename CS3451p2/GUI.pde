@@ -145,8 +145,20 @@ void mousePressed()   // executed when the mouse is pressed
 
 void mouseReleased()   // executed when the mouse is pressed
   {
-  if (keyPressed && key=='s') B=Mouse(); 
-  change=true;    
+  //if (keyPressed && key=='s') B=Mouse();
+  boolean goodSplit = Region[current].splitBy(A,B);
+    if (goodSplit == true) {
+      int firstIndFind = 0;
+      int lastIndFind = 0;
+      //newPoly++;
+      verticesToSave = Region[current].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece //<>//
+      firstIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(0));
+      lastIndFind = verticesToSave.getIndPts(Region[Region.length-1],verticesToSave.getPt(1));
+      
+      Region[++current] = verticesToSave;
+      
+    }
+    change=true;
   }
  
 

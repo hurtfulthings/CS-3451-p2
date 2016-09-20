@@ -342,23 +342,41 @@ class pts
      vec V = V(A,B);                                         
      pt A_r = P();
      pt B_r = P();
+<<<<<<< HEAD
      pt startPt_A = P();
      pt endPt_A = P();
      pt endPt_B = P();
      pt startPt_B = P();
+=======
+     int startPt_r = 0;
+     int startPt_l = 0;
+     int endPt_r = 0;
+     int endPt_l = 0;
+     int currentVtx;
+>>>>>>> beeffda5c35d7b5f709ce7281a8e93f666801b9e
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)])){
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
          if(t <= 1 && t > interPt1) {
            interPt1 = t;
+<<<<<<< HEAD
            startPt_A = G[v]; // save the first point of the edge point A crosses
            endPt_A = G[n(v)];
+=======
+           endPt_r = v; // save the first point of the edge to be cut
+           startPt_l = n(v);
+>>>>>>> beeffda5c35d7b5f709ce7281a8e93f666801b9e
            firstIndFind = v;
          }
          if(t >= 0 && t < interPt2){
              interPt2 = t;
+<<<<<<< HEAD
              endPt_B = G[n(v)]; // save the last point of the opposite edge to be cut
              startPt_B = G[v];
+=======
+             startPt_r = n(v); // save the last point of the opposite edge to be cut
+             endPt_l = v;
+>>>>>>> beeffda5c35d7b5f709ce7281a8e93f666801b9e
              secondIndFind = n(v);
          }
        }
@@ -367,6 +385,7 @@ class pts
     B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
    // A_l = A_r; // vertex A of the cut-out piece
    // B_l = B_r; // vertex B of the cut-out piece
+<<<<<<< HEAD
     verticesOfCut.insertPt(startPt_A);
     verticesOfCut.insertPt(A_r);
     verticesOfCut.insertPt(endPt_A);
@@ -377,6 +396,20 @@ class pts
     pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
     pen(magenta, 3); showId(startPt_A,"S_A"); showId(endPt_B,"E_B"); 
     pen(cyan, 3); showId(endPt_A,"E_A"); showId(startPt_B,"S_B"); 
+=======
+    verticesOfCut.addPt(B_r);
+    verticesOfCut.addPt(G[startPt_r]);
+    currentVtx = n(startPt_r);
+    while(currentVtx != endPt_r) {
+      verticesOfCut.insertPt(G[currentVtx]);
+      currentVtx = n(currentVtx);
+    }
+    verticesOfCut.addPt(G[endPt_r]);
+    verticesOfCut.addPt(A_r);
+    pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
+    //pen(magenta, 3); showId(startPt_r,"S"); showId(endPt_r,"E"); 
+    //pen(cyan, 3); showId(startPt_l,"S1"); showId(endPt_l,"E1"); 
+>>>>>>> beeffda5c35d7b5f709ce7281a8e93f666801b9e
     return verticesOfCut;
   };
   
@@ -389,5 +422,10 @@ class pts
     }
     return i;
   };
+  
+  Boolean isEmpty()
+  {
+   return this.nv == 0;
+  }
 
   }  // end class pts
