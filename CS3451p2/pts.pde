@@ -346,18 +346,19 @@ class pts
      pt startPt_l = P();
      pt endPt_r = P();
      pt endPt_l = P();
+     pt currentVtx = P();
      for (int v = 0; v < nv; v++){
        if(LineStabsEdge(A,B,G[v],G[n(v)])){
          float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
          if(t <= 1 && t > interPt1) {
            interPt1 = t;
-           startPt_r = G[v]; // save the first point of the edge to be cut
+           endPt_r = G[v]; // save the first point of the edge to be cut
            startPt_l = G[n(v)];
            firstIndFind = v;
          }
          if(t >= 0 && t < interPt2){
              interPt2 = t;
-             endPt_r = G[n(v)]; // save the last point of the opposite edge to be cut
+             startPt_r = G[n(v)]; // save the last point of the opposite edge to be cut
              endPt_l = G[v];
              secondIndFind = n(v);
          }
@@ -367,10 +368,12 @@ class pts
     B_r = P(A,interPt2,V); // vertex B of the shape we keep for next split
    // A_l = A_r; // vertex A of the cut-out piece
    // B_l = B_r; // vertex B of the cut-out piece
+    verticesOfCut.insertPt(B_r);
     verticesOfCut.insertPt(startPt_r);
+    currentVtx = startPt_r;
+    //while()
     verticesOfCut.insertPt(endPt_r);
     verticesOfCut.insertPt(B_r);
-    verticesOfCut.insertPt(A_r);
     pen(black, 3); showId(A_r,"A"); showId(B_r,"B"); edge(A_r, B_r);
     pen(magenta, 3); showId(startPt_r,"S"); showId(endPt_r,"E"); 
     pen(cyan, 3); showId(startPt_l,"S1"); showId(endPt_l,"E1"); 
