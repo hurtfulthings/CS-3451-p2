@@ -54,7 +54,10 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='p') ;
     if(key=='v') ; 
     if(key=='w') ;  
-    if(key=='x') ;
+    if(key=='x') {
+      stillCutting = false;
+      CutRegion[cut] = Region[current];
+    }
     if(key=='y') ;
     if(key=='z') ; // used in mouseDrag to scale the control points
 
@@ -146,33 +149,40 @@ void mousePressed()   // executed when the mouse is pressed
 void mouseReleased()   // executed when the mouse is pressed
   {
   //if (keyPressed && key=='s') B=Mouse();
-  boolean goodSplit = Region[current].splitBy(A,B);
-    if (goodSplit == true) {
-      verticesToSave_1 = Region[current].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece //<>//
-      verticesToSave_2 = Region[current].performSplit(B,A); 
-      cutPiece++;
-      current = cutPiece + 1;
-      int count_1 = verticesToSave_1.getNumVtx();
-      int count_2 = verticesToSave_2.getNumVtx();
-      if (count_1 > count_2){
-        Region[cutPiece] = verticesToSave_2;
-        Region[current] = verticesToSave_1;
-        CutRegion[cut] = verticesToSave_2;
-      }else{
-        Region[cutPiece] = verticesToSave_1;
-        Region[current] = verticesToSave_2;
-        CutRegion[cut] = verticesToSave_1;
+  if (stillCutting)
+  {
+    boolean goodSplit = Region[current].splitBy(A,B); //<>//
+      if (goodSplit == true) {
+        verticesToSave_1 = Region[current].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece //<>//
+        verticesToSave_2 = Region[current].performSplit(B,A); 
+        cutPiece++;
+        current = cutPiece + 1;
+        int count_1 = verticesToSave_1.getNumVtx();
+        int count_2 = verticesToSave_2.getNumVtx();
+        if (count_1 > count_2){
+          Region[cutPiece] = verticesToSave_2;
+          Region[current] = verticesToSave_1;
+          CutRegion[cut] = verticesToSave_2;
+          cut++;
+        }else{
+          Region[cutPiece] = verticesToSave_1;
+          Region[current] = verticesToSave_2;
+          CutRegion[cut] = verticesToSave_1;
+          cut++;
+        }
+        
+        
       }
-      
-      
+      change=true;
     }
-    change=true;
   }
  
 
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)
   {
-  //if (!keyPressed || (key=='a')|| (key=='i')) P.dragPicked();   // drag selected point with mouse
+    if (stillCutting)
+    {
+      //if (!keyPressed || (key=='a')|| (key=='i')) P.dragPicked();   // drag selected point with mouse
   //if (keyPressed) {
   //    if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
   //    if (key=='t') P.dragAll(); // move all vertices
@@ -181,7 +191,21 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
   //    }
   //if (keyPressed && key=='s') B=Mouse(); 
   //B=Mouse();
-  B.x = mouseX; B.y = mouseY;
+      B.x = mouseX; B.y = mouseY;
+    } else {
+      for (int r = 0; r < maxRegionCount; r++)
+      {
+        if(!(CutRegion[r].isEmpty()))
+        {
+          if(CutRegion[r].pointInside(A))
+          {
+            CutRegion[r].dragAll();
+          }
+        }
+      }
+      A.x = mouseX; A.y = mouseY;
+    }
+  
   change=true;
   }  
 

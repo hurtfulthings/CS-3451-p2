@@ -10,6 +10,7 @@ pts [] CutRegion = new pts[maxRegionCount]; // array of region
 
 pts verticesToSave_1 = new pts();
 pts verticesToSave_2 = new pts();
+pts originalPolys = new pts();
 float t=0, f=0;
 boolean animate=true, fill=false, timing=false;
 boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpoations
@@ -22,6 +23,7 @@ int current = 0; // current region in the array
 pt A = P(100,100); pt B = P(300,300);
 boolean locked = false;
 boolean overBox = false;
+boolean stillCutting = true;
 float x = 0.0, y = 0.0; 
 //**************************** initialization ****************************
 void setup()               // executed once at the begining 
@@ -33,10 +35,14 @@ void setup()               // executed once at the begining
   P.declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS
   verticesToSave_1.declare();
   verticesToSave_2.declare();
+  originalPolys.declare();
   // P.resetOnCircle(4); // sets P to have 4 points and places them in a circle on the canvas
   P.loadPts("data/pts");  // loads points form file saved with this program
   for (int r=0; r<maxRegionCount; r++){
     Region[r] = new pts(); 
+  }
+  for (int r = 0; r < maxRegionCount; r++) {
+    CutRegion[r] = new pts();
   }
   Region[0] = P;
 } // end of setup
@@ -49,11 +55,19 @@ void draw()      // executed at each frame
     background(white); // clear screen and paints white background
 
     pen(black,2);
-    Region[0].drawCurve();
-    fill(blue);
-    Region[cutPiece].drawCurve(); //Region[current].IDs(); // shows polyloop with vertex labels
+    //Region[0].drawCurve();
+    //fill(blue);
+    //Region[cutPiece].drawCurve(); //Region[current].IDs(); // shows polyloop with vertex labels
     fill(yellow);
-    Region[current].drawCurve(); 
+    Region[current].drawCurve();
+    fill(blue);
+    for (int i = 0; i < maxRegionCount; i++)
+    {
+      if(!(CutRegion[i].isEmpty()))
+      {
+        CutRegion[i].drawCurve();
+      }
+    }
     //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
     
     boolean goodSplit = Region[current].splitBy(A,B);

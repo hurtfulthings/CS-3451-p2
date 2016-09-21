@@ -417,9 +417,26 @@ class pts
     return nv;
   }
   
-  Boolean isEmpty()
+  boolean isEmpty()
   {
    return this.nv == 0;
   };
+  
+  boolean pointInside(pt testPoint)
+  {
+    vec edgeVec = V(0,0);
+    vec pointVec = V(0,0);
+    boolean result = true;
+    for (int v = 0; v < nv; v++)
+    {
+      edgeVec.setTo(V(G[v], G[n(v)]));
+      pointVec.setTo(V(G[v], testPoint));
+      if (det(edgeVec, pointVec) < 0)
+      {
+        result = false;
+      }
+    }
+    return result;
+  }
 
   }  // end class pts
