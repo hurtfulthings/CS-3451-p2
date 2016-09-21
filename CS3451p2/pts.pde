@@ -60,6 +60,7 @@ class pts
    
   // GET POINT
   pt getPt(int v){ return G[v];}
+  pt getNextPt(int v) {return G[n(v)];}
 
 
   // PICK AND EDIT INDIVIDUAL POINT

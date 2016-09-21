@@ -84,3 +84,23 @@ vec slerp(vec U, float t, vec V)
   return W(b/d,U,c/d,V); 
   }
   
+pt SpiralCenter(float a, float m, pt A, pt C)  // computes center of spiral that takes A to C and B to D
+  {
+  float c=cos(a), s=sin(a);
+  vec U = V(m*c-1,m*s);
+  float u2 = dot(U,U);
+  vec CA = V(C,A);
+  vec V = V(dot(U,CA)/u2,det(U,CA)/u2);
+  return P(A,V);
+  }
+  
+void animateSpiral(pt A, pt B, pt C, pt D) {
+  float a = spiralAngle(A,B,C,D); 
+  float m = spiralScale(A,B,C,D);
+  pt F = SpiralCenter(a, m, A, C);
+  for(float t=0.01; t<.99; t+=0.01) {
+    A = spiralPt(A, F, m, a, t);
+    B = spiralPt(B, F, m, a, t);
+  }
+}
+  

@@ -52,11 +52,17 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='s') ;
     if(key=='t') ; // used in mouseDrag to translate the control points 
     if(key=='p') ;
-    if(key=='v') ; 
+    if(key=='v') {
+      if (!stillCutting) {
+        stillMoving = false;
+      }
+    }; 
     if(key=='w') ;  
     if(key=='x') {
       stillCutting = false;
       CutRegion[cut] = Region[current];
+      originalPolys = CutRegion;
+      stillMoving = true;
     }
     if(key=='y') ;
     if(key=='z') ; // used in mouseDrag to scale the control points
@@ -132,7 +138,9 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
 
 void mousePressed()   // executed when the mouse is pressed
   {
-  //if (!keyPressed || (key=='a') || (key=='i') || (key=='x'))  
+    if (stillCutting || stillMoving)
+    {
+      //if (!keyPressed || (key=='a') || (key=='i') || (key=='x'))  
   //P.pickClosest(Mouse()); // pick vertex closest to mouse: sets pv ("picked vertex") in pts
   //if (keyPressed) 
   //   {
@@ -143,8 +151,24 @@ void mousePressed()   // executed when the mouse is pressed
   //if (keyPressed && key=='s') {A=Mouse(); B=Mouse();} 
   A.x = mouseX; A.y = mouseY;
   B.x = mouseX; B.y = mouseY;
+    } else {
+      for (int r = 0; r < maxRegionCount; r++)
+      {
+        if(!(CutRegion[r].isEmpty()))
+        {
+          if(CutRegion[r].pointInside(A))
+          {
+            for (int i = 0; i < CutRegion[r].nv; i++) {
+              animateSpiral(CutRegion[r].getPt(i), CutRegion[r].getNextPt(i), originalPolys[r].getPt(i), originalPolys[r].getNextPt(i));
+            }
+          }
+        }
+      }
+    }
+  
   change=true;
   }
+
 
 void mouseReleased()   // executed when the mouse is pressed
   {
