@@ -33,7 +33,8 @@ void setup()               // executed once at the begining
   size(800, 800);            // window size
   frameRate(30);             // render 30 frames per second
   smooth();                  // turn on antialiasing
-  myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
+  myFace = loadImage("data/pic.jpg"); // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
+  zuriFace = loadImage("data/pic2.jpg");
   P.declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS
   verticesToSave_1.declare();
   verticesToSave_2.declare();

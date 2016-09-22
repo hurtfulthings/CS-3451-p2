@@ -472,9 +472,9 @@ class pts
         G[i].setTo(spiralA(A, B, C, D, t));
         G[n(i)].setTo(spiralB(A, B, C, D, t));
         this.drawCurve();
-        //delay(100);
+        
         //edge(spiralPt(A,F,m,a,t),spiralPt(B,F,m,a,t));
-       }
+      }
      }
      for (int i = 0; i < nv; i++) {
        G[i].setTo(dest.G[i]);
