@@ -62,7 +62,7 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
       stillCutting = false;
       CutRegion[cut] = Region[current];
       originalPolys = CutRegion;
-      stillMoving = true;
+      //stillMoving = true;
     }
     if(key=='y') ;
     if(key=='z') ; // used in mouseDrag to scale the control points
@@ -151,9 +151,9 @@ void mousePressed()   // executed when the mouse is pressed
   //if (keyPressed && key=='s') {A=Mouse(); B=Mouse();} 
   A.x = mouseX; A.y = mouseY;
   B.x = mouseX; B.y = mouseY;
-    } else {
+    } else { //<>//
       for (int r = 0; r < maxRegionCount; r++)
-      {
+      { //<>//
         if(!(CutRegion[r].isEmpty()))
         {
           if(CutRegion[r].pointInside(A))

@@ -58,13 +58,13 @@ void draw()      // executed at each frame
   
     background(white); // clear screen and paints white background
 
-    pen(black,2);
-    //Region[0].drawCurve();
+    pen(magenta,2);
+    Region[0].drawCurve();
     //fill(blue);
     //Region[cutPiece].drawCurve(); //Region[current].IDs(); // shows polyloop with vertex labels
     fill(yellow);
     Region[current].drawCurve();
-    noFill();
+   
     for (int i = 0; i < maxRegionCount; i++)
     {
       if(!(CutRegion[i].isEmpty()))
@@ -75,13 +75,16 @@ void draw()      // executed at each frame
     //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
     
     boolean goodSplit = Region[current].splitBy(A,B);
-    if (goodSplit) {
+    if (stillCutting && goodSplit) {
       pen(green, 5);
-    }else{
+      arrow(A,B);
+    }
+    if (stillCutting && !goodSplit){
       pen(red,7);
+      arrow(A,B);
     }
     
-    arrow(A,B);
+    
     
 
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B
