@@ -94,13 +94,6 @@ pt SpiralCenter(float a, float m, pt A, pt C)  // computes center of spiral that
   return P(A,V);
   }
   
-void animateSpiral(pt A, pt B, pt C, pt D) {
-  float a = spiralAngle(A,B,C,D); 
-  float m = spiralScale(A,B,C,D);
-  pt F = SpiralCenter(a, m, A, C);
-  for(float t=0.01; t<.99; t+=0.01) {
-    A = spiralPt(A, F, m, a, t);
-    B = spiralPt(B, F, m, a, t);
-  }
-}
+
+    
   

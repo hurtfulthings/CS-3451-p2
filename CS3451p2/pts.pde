@@ -21,6 +21,23 @@ class pts
 
   pts() {}
   
+  pts(pts aPts) {
+    nv = aPts.nv;                                // number of vertices in the sequence
+    pv = aPts.pv;                              // picked vertex 
+    iv = aPts.iv;                              // insertion index 
+    maxnv = aPts.maxnv;         //  max number of vertices
+    firstIndFind = aPts.firstIndFind;                    // first index to be recorded
+    secondIndFind = aPts.secondIndFind;                   // last index to be recorded
+    loop= aPts.loop;
+    
+    this.declare();
+    
+    for (int i = 0; i < nv; i++)
+    {
+      setPt(aPts.G[i], i);
+    }
+  }
+  
   void declare() {for (int i=0; i<maxnv; i++) G[i]=P(); }               // creates all points, MUST BE DONE AT INITALIZATION
 
   void empty() {nv=0; pv=0; }                                                 // empties this object
@@ -306,6 +323,7 @@ class pts
   // SPLIT
    int n(int v) {return (v+1)%nv;}
    int p(int v) {return (v + nv - 1)%nv;}
+   
    boolean splitBy(pt A, pt B){
      boolean valid = true;
      boolean notValid = false;
@@ -438,6 +456,29 @@ class pts
       }
     }
     return result;
+  }
+  
+  void animateSpiral(pts dest) {
+    //dest.drawCurve();
+    for (int i = 0; i < nv; i++) {
+      pt A = G[i];
+      pt B = G[n(i)];
+      pt C = dest.getPt(i);
+      pt D = dest.getNextPt(i);
+      float a = spiralAngle(A,B,C,D); 
+      float m = spiralScale(A,B,C,D);
+      pt F = SpiralCenter(a, m, A, C);
+      for(float t=0.1; t<.99; t+=0.1) {
+        G[i].setTo(spiralA(A, B, C, D, t));
+        G[n(i)].setTo(spiralB(A, B, C, D, t));
+        this.drawCurve();
+        //delay(100);
+        //edge(spiralPt(A,F,m,a,t),spiralPt(B,F,m,a,t));
+       }
+     }
+     for (int i = 0; i < nv; i++) {
+       G[i].setTo(dest.G[i]);
+     }
   }
 
   }  // end class pts

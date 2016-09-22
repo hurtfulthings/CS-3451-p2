@@ -61,7 +61,9 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='x') {
       stillCutting = false;
       CutRegion[cut] = Region[current];
-      originalPolys = CutRegion;
+      for (int r = 0; r < maxRegionCount; r++) {
+        originalPolys[r] = new pts(CutRegion[r]);
+      }
       stillMoving = true;
     }
     if(key=='y') ;
@@ -149,18 +151,17 @@ void mousePressed()   // executed when the mouse is pressed
   //   if (key=='d')  P.deletePickedPt(); // deletes vertex closeset to mouse
   //   } 
   //if (keyPressed && key=='s') {A=Mouse(); B=Mouse();} 
-  A.x = mouseX; A.y = mouseY;
-  B.x = mouseX; B.y = mouseY;
+      A.x = mouseX; A.y = mouseY;
+      B.x = mouseX; B.y = mouseY;
     } else {
+      A.x = mouseX; A.y = mouseY;
       for (int r = 0; r < maxRegionCount; r++)
       {
         if(!(CutRegion[r].isEmpty()))
         {
           if(CutRegion[r].pointInside(A))
           {
-            for (int i = 0; i < CutRegion[r].nv; i++) {
-              animateSpiral(CutRegion[r].getPt(i), CutRegion[r].getNextPt(i), originalPolys[r].getPt(i), originalPolys[r].getNextPt(i));
-            }
+            CutRegion[r].animateSpiral(originalPolys[r]);
           }
         }
       }
@@ -216,7 +217,7 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
   //if (keyPressed && key=='s') B=Mouse(); 
   //B=Mouse();
       B.x = mouseX; B.y = mouseY;
-    } else {
+    } else if (stillMoving) {
       for (int r = 0; r < maxRegionCount; r++)
       {
         if(!(CutRegion[r].isEmpty()))
