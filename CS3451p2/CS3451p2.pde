@@ -78,13 +78,16 @@ void draw()      // executed at each frame
       //stroke(red); pt G=Region[0].Centroid(); show(G,10); // shows centroid
       
       boolean goodSplit = Region[current].splitBy(A,B);
-      if (goodSplit) {
+      if (goodSplit && stillCutting) {
         pen(green, 5);
-      }else{
+        arrow(A,B);
+      }
+      if (!goodSplit && stillCutting) {
         pen(red,7);
+        arrow(A,B);
       }
       
-      arrow(A,B);
+      
     
 
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B

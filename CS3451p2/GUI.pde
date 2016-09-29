@@ -49,7 +49,12 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='p') ;
     if(key=='q') ; 
     if(key=='r') ; // used in mouseDrag to rotate the control points 
-    if(key=='s') ;
+    if(key=='s') {
+      //if(!stillMoving){
+      // for (int r = 0; r < maxRegionCount; r++){
+      // }
+      //}
+    };
     if(key=='t') ; // used in mouseDrag to translate the control points 
     if(key=='p') ;
     if(key=='v') {
@@ -230,13 +235,50 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
       }
       A.x = mouseX; A.y = mouseY;
     }
+    if(!stillCutting){
+      if(stillMoving){
+        for (int r = 0; r < maxRegionCount; r++)
+        {
+          if(!(CutRegion[r].isEmpty()))
+          {
+            if(CutRegion[r].pointInside(A))
+            {
+              CutRegion[r].rotateAllAroundCentroid(A, B);
+            }
+          }
+        }
+      }
+    }
+    if(!stillCutting){
+      if(stillMoving){
+        for (int r = 0; r < maxRegionCount; r++)
+        {
+          if(!(CutRegion[r].isEmpty()))
+          {
+            if(CutRegion[r].pointInside(A))
+            {
+              CutRegion[r].rotateAllAroundCentroid(A, B);
+            }
+          }
+        }
+      }
+    }
   
   change=true;
   }  
 
 void mouseWheel(MouseEvent event) { // reads mouse wheel and uses to zoom
   float s = event.getAmount();
-  P.scaleAllAroundCentroid(s/100);
+   for (int r = 0; r < maxRegionCount; r++)
+        {
+          if(!(CutRegion[r].isEmpty()))
+          {
+            if(CutRegion[r].pointInside(A))
+            {
+                CutRegion[r].scaleAllAroundCentroid(s/100);
+            }
+          }
+        }
   change=true;
   }
 
