@@ -186,21 +186,23 @@ void mouseReleased()   // executed when the mouse is pressed
         verticesToSave_1 = Region[current].performSplit(A,B); // cutPiece_P has vertices A_l & B_l of the cut-out piece //<>//
         verticesToSave_2 = Region[current].performSplit(B,A); 
         cutPiece++;
+        System.out.println(cutPiece);
         current = cutPiece + 1;
+        System.out.println(current);
         int count_1 = verticesToSave_1.getNumVtx();
         int count_2 = verticesToSave_2.getNumVtx();
         if (count_1 > count_2){
           Region[cutPiece] = verticesToSave_2;
           Region[current] = verticesToSave_1;
           CutRegion[cut] = verticesToSave_2;
-          cut++;
+          cut++;  
         }else{
           Region[cutPiece] = verticesToSave_1;
           Region[current] = verticesToSave_2;
           CutRegion[cut] = verticesToSave_1;
           cut++;
         }
-        
+     
         
       }
       change=true;
@@ -269,6 +271,7 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
 
 void mouseWheel(MouseEvent event) { // reads mouse wheel and uses to zoom
   float s = event.getAmount();
+  
    for (int r = 0; r < maxRegionCount; r++)
         {
           if(!(CutRegion[r].isEmpty()))

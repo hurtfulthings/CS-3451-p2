@@ -259,6 +259,13 @@ boolean LineStabsEdge(pt A, pt B, pt C, pt D){
   return det1 * det2 < 0.0f; //det products should have opposite sign if line is stabbed
   }
   
+boolean EdgeStabEdge(pt A, pt B, pt C, pt D){
+  boolean edgeABCross = LineStabsEdge(A,B,C,D);
+  boolean edgeCDCross = LineStabsEdge(C,D,A,B);
+  
+  return edgeABCross & edgeCDCross;
+}
+  
 float RayEdgeCrossParameter(pt P, vec V, pt A, pt B){
   vec AB = V(A,B), AP = V(A,P);
   if (abs(det(AB, V))<0.00001) return 0;

@@ -21,6 +21,9 @@ int original = 0; //
 int cut = 0; // next index of region array
 int cutPiece = 0; // previous region in the array
 int current = 0; // current region in the array
+
+color shapeColor;
+
 pt A = P(100,100); pt B = P(300,300);
 boolean locked = false;
 boolean overBox = false;
@@ -58,16 +61,30 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
-
+    pen(black,1);
+    noFill();  
+    Region[0].drawCurve();
+    for (int i = 0; i < maxRegionCount; i++)
+      {
+        if(!(originalPolys[i].isEmpty()))
+        {
+          originalPolys[i].drawCurve();
+        }
+      }
+    
     if(stillCutting || stillMoving)
     {
       pen(black,2);
-      //Region[0].drawCurve();
-      //fill(blue);
-      //Region[cutPiece].drawCurve(); //Region[current].IDs(); // shows polyloop with vertex labels
-      fill(yellow);
+      if(Region[current].pointInside(A)){
+        shapeColor = #FF0000;
+      }else{
+        shapeColor = #FEFF00;
+      }
+      
+      fill(shapeColor);
       Region[current].drawCurve();
-      noFill();
+      
+      fill(magenta);
       for (int i = 0; i < maxRegionCount; i++)
       {
         if(!(CutRegion[i].isEmpty()))
@@ -93,7 +110,8 @@ void draw()      // executed at each frame
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B
 
     } else {
-      noFill();
+      shapeColor = #FEFF00;
+      fill(shapeColor);
       pen(black,2);
       for (int i = 0; i < maxRegionCount; i++)
       {
