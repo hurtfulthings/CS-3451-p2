@@ -22,7 +22,6 @@ int cut = 0; // next index of region array
 int cutPiece = 0; // previous region in the array
 int current = 0; // current region in the array
 
-color shapeColor;
 
 pt A = P(100,100); pt B = P(300,300);
 boolean locked = false;
@@ -71,17 +70,17 @@ void draw()      // executed at each frame
           originalPolys[i].drawCurve();
         }
       }
-    
+      
+      
     if(stillCutting || stillMoving)
     {
       pen(black,2);
-      if(Region[current].pointInside(A)){
-        shapeColor = #FF0000;
-      }else{
-        shapeColor = #FEFF00;
+      fill(yellow);
+      if(Region[current].pointInside(Mouse())){
+        fill(blue);
+        System.out.println("blue");
       }
       
-      fill(shapeColor);
       Region[current].drawCurve();
       
       fill(magenta);
@@ -110,8 +109,7 @@ void draw()      // executed at each frame
                // defines line style wiht (5) and color (green) and draws starting arrow from A to B
 
     } else {
-      shapeColor = #FEFF00;
-      fill(shapeColor);
+      fill(yellow);
       pen(black,2);
       for (int i = 0; i < maxRegionCount; i++)
       {
@@ -156,4 +154,9 @@ void draw()      // executed at each frame
     P.insertPt(B);
   return P;
   }
+  
+  void mouseOver() {
+    fill(blue);
+
+}
   

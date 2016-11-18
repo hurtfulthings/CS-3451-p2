@@ -65,11 +65,11 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='w') ;  
     if(key=='x') {
       stillCutting = false;
+      stillMoving = true;
       CutRegion[cut] = Region[current];
       for (int r = 0; r < maxRegionCount; r++) {
         originalPolys[r] = new pts(CutRegion[r]);
       }
-      stillMoving = true;
     }
     if(key=='y') ;
     if(key=='z') ; // used in mouseDrag to scale the control points
@@ -224,19 +224,8 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
   //if (keyPressed && key=='s') B=Mouse(); 
   //B=Mouse();
       B.x = mouseX; B.y = mouseY;
-    } else if (stillMoving) {
-      for (int r = 0; r < maxRegionCount; r++)
-      {
-        if(!(CutRegion[r].isEmpty()))
-        {
-          if(CutRegion[r].pointInside(A))
-          {
-            CutRegion[r].dragAll();
-          }
-        }
-      }
-      A.x = mouseX; A.y = mouseY;
-    }
+    } 
+
     if(!stillCutting){
       if(stillMoving){
         for (int r = 0; r < maxRegionCount; r++)
@@ -245,24 +234,12 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
           {
             if(CutRegion[r].pointInside(A))
             {
+              CutRegion[r].dragAll();
               CutRegion[r].rotateAllAroundCentroid(A, B);
             }
           }
         }
-      }
-    }
-    if(!stillCutting){
-      if(stillMoving){
-        for (int r = 0; r < maxRegionCount; r++)
-        {
-          if(!(CutRegion[r].isEmpty()))
-          {
-            if(CutRegion[r].pointInside(A))
-            {
-              CutRegion[r].rotateAllAroundCentroid(A, B);
-            }
-          }
-        }
+        A.x = mouseX; A.y = mouseY;
       }
     }
   
@@ -271,7 +248,8 @@ void mouseDragged() // executed when the mouse is dragged (while mouse buttom pr
 
 void mouseWheel(MouseEvent event) { // reads mouse wheel and uses to zoom
   float s = event.getAmount();
-  
+  A = Mouse(); 
+  B = Mouse();
    for (int r = 0; r < maxRegionCount; r++)
         {
           if(!(CutRegion[r].isEmpty()))

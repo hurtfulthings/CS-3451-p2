@@ -455,8 +455,10 @@ class pts
         result = false;
       }
     }
+    
     return result;
   }
+  
   
   void animateSpiral(pts dest) {
     //dest.drawCurve();
